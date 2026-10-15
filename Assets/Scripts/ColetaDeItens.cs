@@ -10,7 +10,7 @@ public class ColetaDeItens : MonoBehaviour
         if (outro.CompareTag("Item"))
         {
             pontuacao += 10;
-            Debug.Log("Pontuação atual: " + pontuacao);
+            Debug.Log("Pontuação atualE: " + pontuacao);
             Destroy(outro.gameObject);
         }
     }
