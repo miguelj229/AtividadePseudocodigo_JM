@@ -1,7 +1,7 @@
 using UnityEngine;
 public class Temporizador : MonoBehaviour
 {
-    public float tempoRestante = 60;
+    public float tempoRestante = 1f;
     void Update()
     {
         tempoRestante -= Time.deltaTime;

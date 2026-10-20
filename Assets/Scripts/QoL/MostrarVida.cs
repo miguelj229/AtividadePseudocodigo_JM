@@ -18,7 +18,7 @@ public class MostrarVida : MonoBehaviour
     {
         textoVida.text = vida.vida.ToString("0");
         textoPont.text = pontuacoes.pontuacao.ToString("0");
-        textoTempo.text = timer.tempoRestante.ToString("60");
+        textoTempo.text = timer.tempoRestante.ToString("0");
 
     }
 }

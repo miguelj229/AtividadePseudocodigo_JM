@@ -19,7 +19,7 @@ public class Pulo : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && noChao)
+        if (Input.GetKeyDown(KeyCode.Space) && noChao || (Input.GetKeyDown(KeyCode.W)) && noChao)
         {
             rb.AddForce(Vector3.up * forcaPulo, ForceMode2D.Impulse);
             noChao = false;

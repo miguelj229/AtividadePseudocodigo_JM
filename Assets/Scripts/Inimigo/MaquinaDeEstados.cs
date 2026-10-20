@@ -26,7 +26,7 @@ public class MaquinaDeEstados : MonoBehaviour
     [SerializeField] private AudioClip somDeMorte;
 
     // Referencias
-    private Rigidbody rb;
+    private Rigidbody2D rb;
     private Animator anim;
     private AudioSource audio;
     private Transform jogador;
@@ -40,7 +40,7 @@ public class MaquinaDeEstados : MonoBehaviour
     
     private void Awake()
     {
-        rb    = GetComponent<Rigidbody>();
+        rb    = GetComponent<Rigidbody2D>();
         anim  = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
         vida  = vidaMaxima;
@@ -64,7 +64,7 @@ public class MaquinaDeEstados : MonoBehaviour
 
     private void AtualizarEstado()
     {
-        float distanciaAoJogador = Vector3.Distance(
+        float distanciaAoJogador = Vector2.Distance(
             transform.position, jogador.position);
 
         switch (estadoAtual)
@@ -115,7 +115,7 @@ public class MaquinaDeEstados : MonoBehaviour
         Transform ponto = pontosDePatrulha[indicePatrulhaAtual];
         MoverEm(ponto.position, velocidadePatrulha);
 
-        float distAoPonto = Vector3.Distance(transform.position, ponto.position);
+        float distAoPonto = Vector2.Distance(transform.position, ponto.position);
         if (distAoPonto <= toleranciaDePonto)
         {
             // Avanca para o proximo ponto (circular)
@@ -132,7 +132,7 @@ public class MaquinaDeEstados : MonoBehaviour
     void Estado_Atacando()
     {
        // Para de se mover durante o ataque
-        rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
 
         tempoDesdeUltimoAtaque += Time.fixedDeltaTime;
         if (tempoDesdeUltimoAtaque < intervaloDeAtaque) return;
@@ -150,7 +150,7 @@ public class MaquinaDeEstados : MonoBehaviour
     void Estado_Morto()
     {
         MudarEstado(Estado.Morto);
-        rb.linearVelocity = Vector3.zero;
+        rb.linearVelocity = Vector2.zero;
         anim.SetTrigger("Morte");
 
         if (somDeMorte != null)
@@ -166,23 +166,21 @@ public class MaquinaDeEstados : MonoBehaviour
     
     // ------ HELPERS ------
 
-    private void MoverEm(Vector3 destino, float velocidade)
+    private void MoverEm(Vector2 destino, float velocidade)
     {
-        Vector3 direcao = (destino - transform.position).normalized;
+        Vector2 direcao = (destino - (Vector2)transform.position).normalized;
         direcao.y = 0f; // ignora diferenca vertical no movimento horizontal
-        direcao.z = 0f; // trava o eixo Z para o 2.5D
 
-        rb.linearVelocity = new Vector3(
+        rb.linearVelocity = new Vector2(
             direcao.x * velocidade,
-            rb.linearVelocity.y,
-            0f
-        );
+            rb.linearVelocity.y
+            );
 
         // Vira o inimigo na direcao do movimento
         if (direcao.x > 0.1f)
-            transform.localScale = new Vector3(1f, 1f, 1f);
+            transform.localScale = new Vector2(1f, 1f);
         else if (direcao.x < -0.1f)
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            transform.localScale = new Vector2(-1f, 1f);
     }
 
 
